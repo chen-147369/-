@@ -9286,7 +9286,8 @@ if(stampSet.has(pid))return;
     function doShare(kind,btn){
       const s=shareSnapshot();
       /* 固定分享链接：不管页面从哪儿打开，复制出去的都是线上正式地址 */
-      const link='https://chen-147369.github.io/shanyouqingyi/';
+      const friendLink='https://chen-147369.github.io/-/';   // 发给好友 / 邀人同行
+      const link='https://chen-147369.github.io/shanyouqingyi/'; // 存通关状 / 话术
       const stampTxt=s.total>=6?'六章集齐':('逛了 '+s.total+'/6 个展区');
       const txt='我在《出山 · 2026 江西云上博览会》'+stampTxt+
         (s.n>0?('，山货单挑了'+s.n+'件'):'')+'。来看看这座长在云上的山。';
@@ -9297,7 +9298,7 @@ if(stampSet.has(pid))return;
       }
       renderShareCard();
       /* 复制目标：friend / group 只要链接，poster 才是"话术+链接" */
-      const payload=(kind==='poster')?(txt+' '+link):link;
+      const payload=(kind==='poster')?(txt+' '+link):friendLink;
       copyText(payload).then(ok=>{
         if(kind==='poster'){
           /* 存图：真实项目里这里应调 canvas 出图。
@@ -9316,11 +9317,12 @@ if(stampSet.has(pid))return;
       if(btn){btn.classList.add('done');setTimeout(()=>btn.classList.remove('done'),2200);}
     }
     /* 分享卡片上的次按钮：想连话术一起发的人自己取，不强迫所有人。
-       与三个 .sb 分开是因为它挂在浮层里，不参与"记住触发按钮做避让"那套逻辑。 */
+       【2026-10-15】话术里的链接与「发给好友 / 邀人同行」保持一致，
+       都指向 friendLink；此处与 doShare 用同一个常量，避免两处走散。 */
     document.addEventListener('click',e=>{
       const c=e.target.closest&&e.target.closest('#sc-copy');
       if(!c)return;
-      const s=shareSnapshot(),link='https://chen-147369.github.io/shanyouqingyi/';
+      const s=shareSnapshot(),link='https://chen-147369.github.io/-/';
       const stampTxt=s.total>=6?'六章集齐':('逛了 '+s.total+'/6 个展区');
       const txt='我在《出山 · 2026 江西云上博览会》'+stampTxt+
         (s.n>0?('，山货单挑了'+s.n+'件'):'')+'。来看看这座长在云上的山。';
