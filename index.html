@@ -3850,8 +3850,8 @@
   @keyframes eccGo{from{offset-distance:0%;}to{offset-distance:100%;}}
   .ecc-n circle{fill:rgba(255,255,255,.88);stroke:#4c8c60;stroke-width:1.2;}
   .ecc-n text{font-size:11px;fill:#2f6b3f;font-weight:600;text-anchor:middle;}
-  .ecc-cap{margin:8px 0 0;text-align:center;font-size:10.5px;line-height:1.9;letter-spacing:1px;color:#5c6b52;}
-  .ecc-cap b{display:block;color:#3c5540;font-size:11.5px;letter-spacing:1.5px;font-weight:600;}
+  .ecc-cap{margin:8px 0 0;text-align:center;font-size:13.5px;line-height:1.9;letter-spacing:1px;color:#f4d68b;font-weight:600;text-shadow:0 1px 4px rgba(12,22,10,.85),0 0 12px rgba(10,20,8,.6);}
+  .ecc-cap b{display:block;color:#ffd24d;font-size:16px;letter-spacing:1.5px;font-weight:800;text-shadow:0 1px 4px rgba(12,22,10,.9),0 0 14px rgba(255,196,60,.35);}
 
   /* ===== 一户山民的一天（#prise） ===== */
   #prise{overflow:hidden;}
@@ -9289,7 +9289,7 @@ if(stampSet.has(pid))return;
       const friendLink='https://chen-147369.github.io/-/';   // 发给好友 / 邀人同行
       const link='https://chen-147369.github.io/shanyouqingyi/'; // 存通关状 / 话术
       const stampTxt=s.total>=6?'六章集齐':('逛了 '+s.total+'/6 个展区');
-      const txt='我在《出山 · 2026 江西云上博览会》'+stampTxt+
+      const txt='我在《山有青意 · 2026 江西云上博览会》'+stampTxt+
         (s.n>0?('，山货单挑了'+s.n+'件'):'')+'。来看看这座长在云上的山。';
       if(kind==='group'){
         /* 邀人同行：顺手把「邀请」这件事登记上，与既有好友机制衔接。
@@ -9324,7 +9324,7 @@ if(stampSet.has(pid))return;
       if(!c)return;
       const s=shareSnapshot(),link='https://chen-147369.github.io/-/';
       const stampTxt=s.total>=6?'六章集齐':('逛了 '+s.total+'/6 个展区');
-      const txt='我在《出山 · 2026 江西云上博览会》'+stampTxt+
+      const txt='我在《山有青意 · 2026 江西云上博览会》'+stampTxt+
         (s.n>0?('，山货单挑了'+s.n+'件'):'')+'。来看看这座长在云上的山。';
       copyText(txt+' '+link).then(ok=>{
         showToast(ok?'分享话术已复制 · 连同链接一起发':'浏览器拦了剪贴板 · 可长按选中手动复制',2800);
