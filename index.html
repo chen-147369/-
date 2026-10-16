@@ -2220,9 +2220,15 @@
        ① 宽屏用 calc(50% - 240px) 把左右位置拉回舞台边界内，口径与 #dots 一致
        ② 常态把bottom 抬到购买条之上（68px），与「#stage.has-buybar」联动的
           情形交给 JS 加 .lift 类抬高，两种状态都不会压住内容 */
-  #about-btn{position:fixed;left:12px;bottom:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px) + var(--sab-x,0px));z-index:120;background:rgba(255,255,255,.78);border:1px solid #d5ddc5;color:#5a6a4f;font-family:inherit;font-size:10px;letter-spacing:2px;padding:5px 12px;border-radius:16px;cursor:pointer;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);box-shadow:0 2px 8px rgba(60,80,50,.12);transition:bottom .3s var(--ease-out);}
-  /* 有货时购买条常驻 68px，把按钮抬到它上方，不叠在一起 */
-  #about-btn.lift{bottom:80px;}
+  /*【2026-10-16 改】应要求把「关于本作品」垂直移到最上面：由 bottom 定位改成 top 定位，
+     落到舞台左上角（与右上角的音乐钮遥相呼应）。这样它彻底离开窗口底部，
+     不再和常驻购买条（68px）抢位置，.lift 抬高逻辑也就用不上了。
+     顶部同样补 env(safe-area-inset-top) / --sat-x，刘海屏不被遮挡。 */
+  /*【2026-10-16 改】z-index 提到 150：笋小宝（#ai-fab，z-index:130）下移后仍有余量，
+     这里顺手把按钮层级抬高，即使两者边缘相碰，按钮也永远是可点的那一方。 */
+  #about-btn{position:fixed;left:12px;top:14px;top:calc(14px + env(safe-area-inset-top,0px) + var(--sat-x,0px));bottom:auto;z-index:150;background:rgba(255,255,255,.78);border:1px solid #d5ddc5;color:#5a6a4f;font-family:inherit;font-size:10px;letter-spacing:2px;padding:5px 12px;border-radius:16px;cursor:pointer;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);box-shadow:0 2px 8px rgba(60,80,50,.12);transition:top .3s var(--ease-out);}
+  /* 有货时购买条常驻 68px：按钮已在顶部，不再需要抬升；此处保留类以免 JS 失效 */
+  #about-btn.lift{bottom:auto;}
   @media(min-width:521px){
     /* 舞台 480px 居中 → 舞台左边界 = 50% - 240px；
        手机端舞台占满整个视口，不需要这层补偿 */
@@ -2908,7 +2914,12 @@
      安卓 WebView 的 env(safe-area-inset-top) 恒为 0，原 14px 会让按钮
      在手机全屏时顶进系统状态栏、被屏幕圆角裁角；统一抬到 42px（缩放后≈34px），
      iOS 有安全区时再叠加。左右各收 16px 避开屏幕圆角。 */
-  #ai-fab{position:fixed;left:16px;top:42px;top:calc(42px + env(safe-area-inset-top,0px) + var(--sat-x,0px));z-index:130;width:62px;height:68px;border:none;
+  /*【2026-10-16 改】「关于本作品」按钮移到左上角后，笋小宝（AI 球）原来 top:42px
+     正好压在它右半边，挡住点击。这里把球整体下移 34px（42 → 76），
+     让按钮（top:14 + 高约 24 ≈ 底边 38）与球之间留出足够空隙；
+     同时 #about-btn 横向再左收一档，双重保险不重叠。
+     手机端全屏时同样叠 env(safe-area-inset-top)，不被状态栏 / 圆角裁切。 */
+  #ai-fab{position:fixed;left:16px;top:76px;top:calc(76px + env(safe-area-inset-top,0px) + var(--sat-x,0px));z-index:130;width:62px;height:68px;border:none;
     background:transparent;cursor:pointer;padding:0;-webkit-user-select:none;user-select:none;
     filter:drop-shadow(0 6px 14px rgba(15,30,15,.4));animation:aiBorn .7s var(--ease-spring) 1.2s both;}
   #ai-fab svg{width:100%;height:100%;transform-origin:50% 80%;animation:aiWave 2.8s ease-in-out infinite;}
@@ -2944,7 +2955,9 @@
      于是它常态压住标题首行与积分牌（实测 p1 压 kicker、p8/p9 压大标题）。
      变量由 JS 的几何自躲逻辑按候选位置写入（见 showTipSmart）；
      不设变量时回落到默认值，所以无 JS 也能正常显示。 */
-  #ai-tip{position:fixed;z-index:130;left:var(--tip-l,12px);top:88px;top:calc(88px + env(safe-area-inset-top,0px) + var(--sat-x,0px));top:var(--tip-t,calc(88px + env(safe-area-inset-top,0px) + var(--sat-x,0px)));max-width:156px;background:#fff;border:1px solid rgba(120,110,70,.22);
+  /*【2026-10-16 改】随球的 top 42→76 同步下移 34px（88 → 122），
+     气泡仍紧贴球的右下角、不脱节。 */
+  #ai-tip{position:fixed;z-index:130;left:var(--tip-l,12px);top:122px;top:calc(122px + env(safe-area-inset-top,0px) + var(--sat-x,0px));top:var(--tip-t,calc(122px + env(safe-area-inset-top,0px) + var(--sat-x,0px)));max-width:156px;background:#fff;border:1px solid rgba(120,110,70,.22);
     color:#4a5a40;font-size:11.5px;line-height:1.55;padding:7px 11px;border-radius:12px;border-top-left-radius:3px;
     box-shadow:0 5px 16px rgba(40,55,35,.18);opacity:0;pointer-events:none;transform:translateY(8px);transition:.45s var(--ease-out);}
   #ai-tip.show{opacity:1;transform:none;}
@@ -2956,8 +2969,10 @@
   /* 聊天面板：球移到左上后面板也跟过去。宽度 342px 在 480px 舞台里贴左会偏，
      改成「顶部居中偏下」—— 从球的位置向下铺开，视觉上仍是「从笋小宝长出来」。
      transform-origin 从 bottom right 改成 top left，展开方向才朝向球。 */
-  #ai-panel{position:fixed;z-index:140;left:50%;transform:translateX(-50%);top:86px;top:calc(86px + env(safe-area-inset-top,0px) + var(--sat-x,0px));width:min(342px,calc(100vw - 20px));width:min(342px,calc(var(--cw,480px) - 20px));
-    height:min(468px,calc(100vh - 128px));height:min(468px,calc(100dvh - 128px));height:min(468px,calc(var(--canvas-h,1080px) - 128px));display:flex;flex-direction:column;overflow:hidden;
+  /*【2026-10-16 改】面板 top 随球下移：86 → 120，高度上限也相应收紧 34px，
+     避免面板底部顶出小屏视口。 */
+  #ai-panel{position:fixed;z-index:140;left:50%;transform:translateX(-50%);top:120px;top:calc(120px + env(safe-area-inset-top,0px) + var(--sat-x,0px));width:min(342px,calc(100vw - 20px));width:min(342px,calc(var(--cw,480px) - 20px));
+    height:min(434px,calc(100vh - 162px));height:min(434px,calc(100dvh - 162px));height:min(434px,calc(var(--canvas-h,1080px) - 162px));display:flex;flex-direction:column;overflow:hidden;
     background:linear-gradient(180deg,#f8f4e6,#efe9d8);border:1px solid rgba(120,110,70,.28);border-radius:18px;
     box-shadow:0 18px 44px rgba(12,22,10,.38);opacity:0;pointer-events:none;
     transform:translateX(-50%) translateY(14px) scale(.96);transform-origin:top left;transition:.32s var(--ease-out);}
@@ -9789,7 +9804,10 @@ let log=[],busy=false,opened=false;
 
      用 requestAnimationFrame 节流挂在 scroll 上，passive 监听不影响滚动性能。
      ---------------------------------------------------------------- */
-  const YIELD_ZONE={w:96,h:112};   /* 让位判定区：球所在的那一角96×112 px */
+  /*【2026-10-16 改】球由 top:42 下移到 top:76（+34px），高度 68。
+     原判定区 96×112 够不到球的新底边（76+68=144），会让球压住标题却不让位；
+     这里高度提到 146，宽度不变。 */
+  const YIELD_ZONE={w:96,h:146};   /* 让位判定区：球所在的那一角96×146 px */
   const yieldTargets='button,.add-cart,.go-shop,.bag-checkout,.bb-go,.invite,.stepper button,.bag-qty button,#popen,#shop-open';
   function aiShouldYield(){
     /* 购物页与弹层是场景互斥，已经整体隐藏，这里不参与判断 */
@@ -9969,7 +9987,8 @@ let log=[],busy=false,opened=false;
     /* 纯算术碰撞：候选矩形 vs 障碍矩形 */
     const hit=(l,t)=>obs.some(o=>!(l+W<=o.l||o.r<=l||t+H<=o.t||o.b<=t));
     /* 贴球那一列排最前：视觉上像从笋小宝身上长出来 */
-    for(let top=88;top+H<=maxTop;top+=24){
+    /*【2026-10-16 改】起点随球下移（88 → 122），气泡才不会从球身中间长出来 */
+    for(let top=122;top+H<=maxTop;top+=24){
       for(const l of cols){
         if(!hit(l,top)){
           /*【全屏一厅版】ai-tip 包进缩放画布后包含块为画布：
